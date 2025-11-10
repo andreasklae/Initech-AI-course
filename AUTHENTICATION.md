@@ -4,15 +4,14 @@ The website is now password-protected with a simple authentication system.
 
 ## 🔑 Login Credentials
 
-- **Username:** `admin`
-- **Password:** `initech123`
+The credentials are configured in the source code. Contact the administrator for access.
 
 ## 🛡️ Security Features
 
 ### Password Hashing
 The password is **not hardcoded** in plain text. Instead:
 - The password is hashed using **SHA-256** algorithm
-- Only the hash is stored in the code: `64d29ae21fdc201c82193d6f421a976baccc9d78911502ac26270aacc61375cf`
+- Only the hash is stored in the code
 - When a user logs in, their entered password is hashed and compared to the stored hash
 - This prevents the actual password from being visible in the source code
 
@@ -77,7 +76,7 @@ LandingPage.jsx
 Edit `src/components/Login.jsx`:
 ```javascript
 // Line ~42
-if (username.toLowerCase() !== 'admin') {  // Change 'admin' here
+if (username.toLowerCase() !== 'YOUR_USERNAME') {  // Change 'YOUR_USERNAME' here
 ```
 
 ### Change Password
@@ -137,9 +136,7 @@ npm start
 
 1. Visit `http://localhost:5173`
 2. You should see the login screen
-3. Enter:
-   - Username: `admin`
-   - Password: `initech123`
+3. Enter your configured credentials
 4. Click "Logg inn"
 5. You should be redirected to the landing page
 
