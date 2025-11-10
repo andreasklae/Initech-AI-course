@@ -2,6 +2,14 @@
 
 A modern, responsive landing page for a 6-hour AI fundamentals course. Built with React, Vite, and Tailwind CSS, deployed to GitHub Pages.
 
+## 🔒 Authentication
+
+The website is password-protected. Default credentials:
+- **Username:** `admin`
+- **Password:** `initech123`
+
+See [AUTHENTICATION.md](AUTHENTICATION.md) for details on how to change credentials or remove authentication.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -71,13 +79,16 @@ Your site will be available at: `https://YOUR_USERNAME.github.io/Initech-AI-cour
 
 ## ✨ Features
 
+- 🔒 **Password Protected** - Simple authentication system (username: `admin`, password: `initech123`)
 - 📱 **Fully Responsive** - Works perfectly on mobile, tablet, and desktop
-- 🎨 **Modern Dark Design** - Professional aesthetic with warm orange accents
+- 🎨 **Ultra-Dark Design** - Almost black background with blue-tinted gradients
+- 💎 **Glassmorphism** - Modern frosted glass effect on all cards
 - ⚡ **Smooth Animations** - Scroll-triggered fade-in animations for engaging UX
 - 🔄 **Interactive FAQ** - Accordion-style questions and answers
 - 🎯 **Clear CTAs** - Strategic placement of "Meld deg på kurset" buttons
 - 🌐 **Norwegian Content** - All text in Norwegian as specified
 - 🔖 **Easy to Update** - Highlighted placeholders for quick content changes
+- 🎨 **Professional Icons** - Lucide React icons throughout
 
 ## 🛠️ Technologies
 
