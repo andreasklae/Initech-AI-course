@@ -20,7 +20,8 @@ import {
   ChevronDown,
   Mail,
   Phone,
-  Award
+  Award,
+  LogOut
 } from 'lucide-react';
 import mainLogo from '../assets/main_logo.png';
 import ScrollReveal from './ScrollReveal';
@@ -97,10 +98,18 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
   </div>
 );
 
-export default function LandingPage() {
+export default function LandingPage({ onLogout }) {
+  const [showLogoutMenu, setShowLogoutMenu] = useState(false);
+
   const handleCTAClick = () => {
     // Placeholder for form/registration logic
     alert('Påmeldingsfunksjonalitet kommer her!');
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('Er du sikker på at du vil logge ut?')) {
+      onLogout();
+    }
   };
 
   const modules = [
@@ -144,6 +153,16 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen text-gray-100">
+      {/* Logout Button - Fixed Position */}
+      <button
+        onClick={handleLogout}
+        className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-red-500/30 text-gray-400 hover:text-red-400 px-4 py-2 rounded-lg transition-all duration-300 shadow-lg"
+        title="Logg ut"
+      >
+        <LogOut className="w-4 h-4" />
+        <span className="hidden sm:inline">Logg ut</span>
+      </button>
+
       {/* SECTION 1: HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden">
         {/* Background gradient */}
@@ -534,18 +553,20 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/50 backdrop-blur-sm py-8 px-4 text-center text-gray-600 border-t border-white/5">
-        <p>
-          &copy; 2024{' '}
+      <footer className="bg-black/50 backdrop-blur-sm py-8 px-4 text-center border-t border-white/5">
+        <p className="text-gray-500 text-sm mb-2">
+          &copy; 2025 Andreas Klæboe. Alle rettigheter reservert.
+        </p>
+        <p className="text-gray-400 text-sm">
+          Designet og utviklet av{' '}
           <a 
             href="https://andreasklaeboe.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-orange-500 hover:text-orange-400 transition-colors"
+            className="text-orange-500 hover:text-orange-400 font-semibold underline decoration-orange-500/50 hover:decoration-orange-400 underline-offset-4 transition-all duration-300"
           >
             Andreas Klæboe
           </a>
-          . Alle rettigheter reservert.
         </p>
       </footer>
     </div>

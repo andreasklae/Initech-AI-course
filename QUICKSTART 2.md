@@ -8,10 +8,6 @@ npm start
 
 Then open http://localhost:5173 in your browser!
 
-### 🔒 Login Credentials
-- **Username:** `admin`
-- **Password:** `initech123`
-
 ## 🎯 What You'll See
 
 A complete, production-ready landing page with:

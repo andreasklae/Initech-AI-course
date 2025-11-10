@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-black text-gray-100;
+    background: linear-gradient(to bottom right, #000000, #030712, #020617);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .placeholder-highlight {
+    @apply bg-yellow-500/20 border-2 border-yellow-500 border-dashed px-2 py-1 rounded font-mono text-yellow-300;
+  }
+}
+
