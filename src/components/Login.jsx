@@ -41,8 +41,8 @@ export default function Login({ onLogin }) {
     // Hash the entered password and compare
     const passwordHash = await hashPassword(password);
     
-    // Correct hash for "initech123"
-    const correctHash = '64d29ae21fdc201c82193d6f421a976baccc9d78911502ac26270aacc61375cf';
+    // Password hash - change this when updating credentials
+    const correctHash = '7c59ba3c67bd725938e9993c8ce56ae0372f9b3a02d82ff7a2fd8967a3841aa2';
     
     if (passwordHash === correctHash) {
       // Success - store auth token

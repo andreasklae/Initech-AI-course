@@ -8,9 +8,8 @@ npm start
 
 Then open http://localhost:5173 in your browser!
 
-### 🔒 Login Credentials
-- **Username:** `admin`
-- **Password:** `initech123`
+### 🔒 Login Required
+The site is password-protected. Use your configured credentials to log in.
 
 ## 🎯 What You'll See
 

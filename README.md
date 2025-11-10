@@ -4,11 +4,9 @@ A modern, responsive landing page for a 6-hour AI fundamentals course. Built wit
 
 ## 🔒 Authentication
 
-The website is password-protected. Default credentials:
-- **Username:** `admin`
-- **Password:** `initech123`
+The website is password-protected. Contact the site administrator for login credentials.
 
-See [AUTHENTICATION.md](AUTHENTICATION.md) for details on how to change credentials or remove authentication.
+See [AUTHENTICATION.md](AUTHENTICATION.md) for details on how to configure credentials or remove authentication.
 
 ## 🚀 Getting Started
 
@@ -79,7 +77,7 @@ Your site will be available at: `https://YOUR_USERNAME.github.io/Initech-AI-cour
 
 ## ✨ Features
 
-- 🔒 **Password Protected** - Simple authentication system (username: `admin`, password: `initech123`)
+- 🔒 **Password Protected** - Simple authentication system with SHA-256 hashed passwords
 - 📱 **Fully Responsive** - Works perfectly on mobile, tablet, and desktop
 - 🎨 **Ultra-Dark Design** - Almost black background with blue-tinted gradients
 - 💎 **Glassmorphism** - Modern frosted glass effect on all cards
