@@ -19,6 +19,13 @@ export default {
           800: '#9a3412',
           900: '#7c2d12',
         },
+        // AI-inspired colorful palette (Copilot/Apple Intelligence style)
+        'ai-cyan': '#00D4FF',
+        'ai-blue': '#0095FF',
+        'ai-purple': '#7B61FF',
+        'ai-magenta': '#E961FF',
+        'ai-pink': '#FF6B9D',
+        'ai-orange': '#FFB347',
       },
     },
   },
