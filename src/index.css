@@ -16,7 +16,75 @@
 
 @layer utilities {
   .placeholder-highlight {
-    @apply bg-yellow-500/20 border-2 border-yellow-500 border-dashed px-2 py-1 rounded font-mono text-yellow-300;
+    @apply bg-yellow-500/20 border-2 border-yellow-500 border-dashed px-2 py-1 rounded-xl font-mono text-yellow-300;
+  }
+  
+  /* Colorful AI-inspired gradients - like Copilot/Apple Intelligence */
+  .rainbow-gradient {
+    background: linear-gradient(135deg, 
+      #00D4FF 0%,
+      #7B61FF 35%,
+      #E961FF 65%,
+      #FF6B9D 100%
+    );
+  }
+  
+  .text-gradient {
+    background: linear-gradient(135deg, 
+      #00D4FF 0%,
+      #7B61FF 35%,
+      #E961FF 65%,
+      #FF6B9D 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .rainbow-accent {
+    background: linear-gradient(90deg, 
+      #00D4FF 0%,
+      #0095FF 20%,
+      #7B61FF 40%,
+      #E961FF 60%,
+      #FF6B9D 80%,
+      #FFB347 100%
+    );
+  }
+  
+  /* Warm gradient option - sunset vibes */
+  .warm-gradient {
+    background: linear-gradient(135deg, 
+      #FFB347 0%,
+      #FF6B9D 50%, 
+      #E961FF 100%
+    );
+  }
+  
+  /* Cool gradient - ocean vibes */
+  .cool-gradient {
+    background: linear-gradient(135deg, 
+      #00D4FF 0%, 
+      #0095FF 50%, 
+      #7B61FF 100%
+    );
+  }
+  
+  /* AI-themed grid background */
+  .ai-grid-bg {
+    background-image: 
+      linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(123, 97, 255, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  /* Subtle border accent */
+  .accent-border {
+    border-color: rgba(0, 212, 255, 0.3);
+  }
+  
+  .accent-border:hover {
+    border-color: rgba(123, 97, 255, 0.5);
   }
 }
 
