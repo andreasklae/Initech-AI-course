@@ -23,6 +23,7 @@ import {
   Award,
   LogOut
 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import mainLogo from '../assets/main_logo.png';
 import ScrollReveal from './ScrollReveal';
 import ScrollProgress from './ScrollProgress';
@@ -160,6 +161,9 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
 export default function LandingPage({ onLogout }) {
   const [showLogoutMenu, setShowLogoutMenu] = useState(false);
   const [signupType, setSignupType] = useState('individual'); // 'individual' or 'business'
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+  const formRef = useRef(null);
 
   const handleCTAClick = () => {
     // Scroll to signup form heading with offset so it's visible at top
@@ -178,6 +182,66 @@ export default function LandingPage({ onLogout }) {
   const handleLogout = () => {
     if (window.confirm('Er du sikker på at du vil logge ut?')) {
       onLogout();
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+
+    // Prepare email data based on signup type
+    const emailData = {
+      signup_type: signupType === 'individual' ? 'Enkeltperson' : 'Bedrift',
+      name: signupType === 'individual' ? data.name : data['business-contact'],
+      email: signupType === 'individual' ? data.email : data['business-email'],
+      phone: signupType === 'individual' ? data.phone : data['business-phone'],
+      company: signupType === 'individual' ? (data.company || 'Ikke oppgitt') : data['business-company'],
+      participants: signupType === 'business' ? data.participants : 'N/A',
+      message: signupType === 'individual' ? (data.message || 'Ingen melding') : (data['business-message'] || 'Ingen melding'),
+    };
+
+    try {
+      // Send notification email to you
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_NOTIFICATION,
+        emailData,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      // Send confirmation email to user
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_CONFIRMATION,
+        {
+          to_name: emailData.name,
+          to_email: emailData.email,
+          signup_type: emailData.signup_type,
+          participants: emailData.participants,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      setSubmitStatus('success');
+      e.target.reset();
+      
+      // Scroll to success message
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setSubmitStatus('error');
+      
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -689,7 +753,28 @@ export default function LandingPage({ onLogout }) {
               </button>
             </div>
 
-            <form className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+            <form ref={formRef} onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+              {/* Success/Error Messages */}
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-2xl flex items-center gap-3 animate-fadeIn">
+                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-green-400 font-semibold">Påmelding sendt!</p>
+                    <p className="text-green-300/80 text-sm">Du vil motta en bekreftelse på e-post.</p>
+                  </div>
+                </div>
+              )}
+              
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center gap-3 animate-fadeIn">
+                  <XCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-red-400 font-semibold">Noe gikk galt</p>
+                    <p className="text-red-300/80 text-sm">Vennligst prøv igjen eller kontakt oss direkte.</p>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-6">
                 {signupType === 'individual' ? (
                   <>
@@ -865,14 +950,17 @@ export default function LandingPage({ onLogout }) {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full relative overflow-hidden bg-black/50 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:bg-black/70 hover:shadow-2xl hover:shadow-[#7B61FF]/20 border-2 border-transparent"
+                  disabled={isSubmitting}
+                  className="w-full relative overflow-hidden bg-black/50 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:bg-black/70 hover:shadow-2xl hover:shadow-[#7B61FF]/20 border-2 border-transparent disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   style={{
                     backgroundImage: 'linear-gradient(black, black), linear-gradient(135deg, #00D4FF 0%, #7B61FF 35%, #E961FF 65%, #FF6B9D 100%)',
                     backgroundOrigin: 'border-box',
                     backgroundClip: 'padding-box, border-box',
                   }}
                 >
-                  <span className="relative z-10">Send påmelding</span>
+                  <span className="relative z-10">
+                    {isSubmitting ? 'Sender...' : 'Send påmelding'}
+                  </span>
                 </button>
               </div>
             </form>

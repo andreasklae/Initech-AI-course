@@ -32,6 +32,11 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_EMAILJS_SERVICE_ID: ${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_NOTIFICATION: ${{ secrets.VITE_EMAILJS_TEMPLATE_NOTIFICATION }}
+          VITE_EMAILJS_TEMPLATE_CONFIRMATION: ${{ secrets.VITE_EMAILJS_TEMPLATE_CONFIRMATION }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

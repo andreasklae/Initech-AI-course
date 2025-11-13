@@ -8,6 +8,35 @@ The website is password-protected. Contact the site administrator for login cred
 
 See [AUTHENTICATION.md](AUTHENTICATION.md) for details on how to configure credentials or remove authentication.
 
+## 📧 Email Configuration
+
+The signup form uses [EmailJS](https://www.emailjs.com/) to send emails:
+- **Notification email** sent to you when someone signs up
+- **Confirmation email** sent to the user
+
+### Setup EmailJS
+
+1. Sign up at [emailjs.com](https://www.emailjs.com/)
+2. Add an email service (Gmail, Outlook, etc.)
+3. Create two email templates:
+   - **Notification template** (for you to receive signups)
+   - **Confirmation template** (for users to receive confirmation)
+4. Copy your credentials to `.env`:
+   ```bash
+   VITE_EMAILJS_SERVICE_ID=your_service_id
+   VITE_EMAILJS_TEMPLATE_NOTIFICATION=your_notification_template_id
+   VITE_EMAILJS_TEMPLATE_CONFIRMATION=your_confirmation_template_id
+   VITE_EMAILJS_PUBLIC_KEY=your_public_key
+   ```
+
+### Security Best Practices
+
+1. **Domain Restrictions**: In EmailJS dashboard → Account → Security, add your domain(s) to prevent unauthorized use
+2. **Environment Variables**: Never commit `.env` to Git (it's already in `.gitignore`)
+3. **Template Variables**: The templates use these variables:
+   - Notification: `{{name}}`, `{{email}}`, `{{phone}}`, `{{company}}`, `{{signup_type}}`, `{{participants}}`, `{{message}}`
+   - Confirmation: `{{to_name}}`, `{{to_email}}`, `{{signup_type}}`
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -27,6 +56,12 @@ cd Initech-AI-course
 ```bash
 npm install
 ```
+
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
+Then edit `.env` and add your EmailJS credentials. See the **Email Configuration** section below for details.
 
 ### Development
 
@@ -60,6 +95,19 @@ This project is automatically deployed to GitHub Pages using GitHub Actions.
 3. Under **Build and deployment**, select:
    - **Source**: GitHub Actions
 
+### Setup GitHub Secrets (Required for Email Functionality)
+
+For the email form to work on the deployed site, add your EmailJS credentials as GitHub secrets:
+
+1. Go to your repository → **Settings** → **Secrets and variables** → **Actions**
+2. Click **New repository secret** and add these 4 secrets:
+   - `VITE_EMAILJS_SERVICE_ID` = your service ID
+   - `VITE_EMAILJS_TEMPLATE_NOTIFICATION` = your notification template ID
+   - `VITE_EMAILJS_TEMPLATE_CONFIRMATION` = your confirmation template ID
+   - `VITE_EMAILJS_PUBLIC_KEY` = your public key
+
+These values should match what's in your local `.env` file.
+
 ### Automatic Deployment
 
 The project is configured to automatically deploy to GitHub Pages whenever code is pushed to the `main` branch:
@@ -78,6 +126,7 @@ Your site will be available at: `https://YOUR_USERNAME.github.io/Initech-AI-cour
 ## ✨ Features
 
 - 🔒 **Password Protected** - Simple authentication system with SHA-256 hashed passwords
+- 📧 **Email Integration** - Form submissions with EmailJS (notification + confirmation emails)
 - 📱 **Fully Responsive** - Works perfectly on mobile, tablet, and desktop
 - 🎨 **Ultra-Dark Design** - Almost black background with blue-tinted gradients
 - 💎 **Glassmorphism** - Modern frosted glass effect on all cards
@@ -93,6 +142,7 @@ Your site will be available at: `https://YOUR_USERNAME.github.io/Initech-AI-cour
 - **React 18** - UI library
 - **Vite 5** - Lightning-fast build tool and dev server
 - **Tailwind CSS 3** - Utility-first CSS framework
+- **EmailJS** - Email service for form submissions
 - **GitHub Actions** - Automated CI/CD pipeline
 - **GitHub Pages** - Free hosting
 

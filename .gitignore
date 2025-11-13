@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment variables - DO NOT COMMIT
+.env
+.env.local
+.env.production
+
 # Credentials - DO NOT COMMIT
 CREDENTIALS.md
 
