@@ -620,22 +620,6 @@ export default function LandingPage({ onLogout }) {
             </form>
           </ScrollReveal>
           
-          <ScrollReveal animation="fadeUp" delay={150}>
-            <div className="mt-12 pt-8 border-t border-gray-800 text-center">
-              <p className="text-gray-500 mb-4">Har du spørsmål?</p>
-              <div className="flex flex-wrap items-center justify-center gap-6 text-gray-400">
-                <a href="#" className="flex items-center gap-2 hover:bg-gradient-to-r hover:from-[#00D4FF] hover:to-[#7B61FF] hover:bg-clip-text hover:text-transparent transition-all duration-300">
-                  <Mail className="w-5 h-5" />
-                  <Placeholder>[epost]</Placeholder>
-                </a>
-                <span className="text-gray-700">•</span>
-                <a href="#" className="flex items-center gap-2 hover:bg-gradient-to-r hover:from-[#00D4FF] hover:to-[#7B61FF] hover:bg-clip-text hover:text-transparent transition-all duration-300">
-                  <Phone className="w-5 h-5" />
-                  <Placeholder>[telefon]</Placeholder>
-                </a>
-              </div>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
