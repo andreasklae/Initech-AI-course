@@ -2,9 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { 
   Brain, 
   MessageSquare, 
-  FileText, 
-  BarChart3, 
-  Zap, 
   Shield,
   CheckCircle2,
   XCircle,
@@ -21,7 +18,10 @@ import {
   Mail,
   Phone,
   Award,
-  LogOut
+  LogOut,
+  Lightbulb,
+  Wrench,
+  ThumbsUp
 } from 'lucide-react';
 import mainLogo from '../assets/main_logo.png';
 import ScrollReveal from './ScrollReveal';
@@ -103,7 +103,7 @@ const FAQItem = ({ question, answer, isLast }) => {
 };
 
 // Module Card Component - Minimal with subtle glow
-const ModuleCard = ({ icon: Icon, number, title, description }) => {
+const ModuleCard = ({ icon: Icon, title, description }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
@@ -137,9 +137,8 @@ const ModuleCard = ({ icon: Icon, number, title, description }) => {
           <div className="p-3 bg-gradient-to-br from-[#00D4FF]/10 to-[#7B61FF]/10 rounded-2xl group-hover:scale-110 group-hover:from-[#00D4FF]/20 group-hover:to-[#7B61FF]/20 transition-all">
             <Icon className="w-6 h-6 text-[#00D4FF]" />
           </div>
-          <span className="bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] bg-clip-text text-transparent font-bold text-lg">Modul {number}</span>
+          <h3 className="text-xl font-bold bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] bg-clip-text text-transparent">{title}</h3>
         </div>
-        <h3 className="text-xl font-bold mb-3">{title}</h3>
         <p className="text-gray-400 leading-relaxed">{description}</p>
       </div>
     </div>
@@ -183,40 +182,29 @@ export default function LandingPage({ onLogout }) {
 
   const modules = [
     {
-      icon: Brain,
-      number: 1,
-      title: 'Grunnleggende forståelse',
-      description: 'Hva AI faktisk er, hva det kan og ikke kan. Du vil oppdage AI sine begrensninger selv - ved å gi den oppgaver den svarer feil på.'
+      icon: Lightbulb,
+      title: 'Fra 0 til 100',
+      description: 'Få en krystallklar, lettfattelig forståelse av AI/LLM (som ChatGPT/Gemini), uten unødvendig sjargong. Du lærer hva AI er, og hvordan det virker.'
     },
     {
       icon: MessageSquare,
-      number: 2,
-      title: 'Prompt engineering',
-      description: 'Samme AI, 10x bedre svar. Du lærer en enkel modell (RCFK) for hvordan du skal "snakke" med AI.'
-    },
-    {
-      icon: FileText,
-      number: 3,
-      title: 'AI som skriveassistent',
-      description: 'Skriv e-poster, rapporter og dokumenter raskere – men også mer menneskelig.'
-    },
-    {
-      icon: BarChart3,
-      number: 4,
-      title: 'AI for dataanalyse',
-      description: 'Analyser data uten avanserte Excel-formler, og lær å oppdage feil i AI-analyser.'
-    },
-    {
-      icon: Zap,
-      number: 5,
-      title: 'AI-verktøy i praksis',
-      description: 'Oppdag AI som kan analysere bilder, skrive kode, automatisere oppgaver.'
+      title: 'Mestre de enkleste teknikkene',
+      description: 'Vi gir deg de grunnleggende teknikkene innen såkalt Prompt Engineering slik at du kan bruke AI som en effektiv assistent og får de resultatene du ønsker – med en gang!'
     },
     {
       icon: Shield,
-      number: 6,
-      title: 'Datasikkerhet og etikk',
-      description: 'Hva du aldri skal dele, hvordan anonymisere data riktig, og etiske grenser.'
+      title: 'Lær å bruke AI trygt',
+      description: 'På kun 4 timer får du de essensielle etiske retningslinjene og sikkerhetsprinsippene du bør kjenne til, for å unngå fallgruver og bruke AI ansvarlig.'
+    },
+    {
+      icon: Wrench,
+      title: 'Praktisk verktøykasse',
+      description: 'Få en innføring i bruken av enkle, men kraftige verktøy, for å utvide dine ferdigheter fra ren tekst til enkel dataanalyse og gode presentasjoner.'
+    },
+    {
+      icon: ThumbsUp,
+      title: 'Få selvtilliten du trenger',
+      description: 'Etter 4 timer vil du ha det praktiske grunnlaget som gjør deg trygg på å delta i AI-samtaler og bruke teknologien i din arbeidshverdag.'
     }
   ];
 
@@ -251,23 +239,25 @@ export default function LandingPage({ onLogout }) {
           </ScrollReveal>
           
           <ScrollReveal animation="fadeDown" delay={100}>
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Bruker du AI? Eller bare tror du gjør det?
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              Initech AI kurs
             </h1>
           </ScrollReveal>
           
           <ScrollReveal animation="fadeUp" delay={200}>
-            <p className="text-xl md:text-2xl text-gray-400 mb-12 leading-relaxed max-w-3xl mx-auto">
-              Et 6-timers grunnkurs i AI for folk som vil lære å bruke det riktig - ikke bare åpne ChatGPT og håpe på det beste.
+            <p className="text-xl md:text-2xl text-gray-400 mb-4 leading-relaxed max-w-3xl mx-auto">
+              Hører du at det prates om AI overalt, men har ikke helt kommet i gang selv ennå?
             </p>
           </ScrollReveal>
           
-          <ScrollReveal animation="scale" delay={300}>
-            <CTAButton onClick={handleCTAClick} />
-            
-            <p className="mt-8 text-gray-500 text-lg">
-              <Placeholder>[X]</Placeholder> plasser igjen · Neste kurs: <Placeholder>[Dato]</Placeholder>
+          <ScrollReveal animation="fadeUp" delay={300}>
+            <p className="text-xl md:text-2xl text-gray-400 mb-12 leading-relaxed max-w-3xl mx-auto">
+              I løpet av vårt 4 timer lange introduksjonskurs kan vi gi deg det praktiske utgangspunktet du trenger videre!
             </p>
+          </ScrollReveal>
+          
+          <ScrollReveal animation="scale" delay={400}>
+            <CTAButton onClick={handleCTAClick} />
           </ScrollReveal>
         </div>
 
@@ -275,83 +265,20 @@ export default function LandingPage({ onLogout }) {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00D4FF]/40 through-[#7B61FF]/40 to-transparent"></div>
       </section>
 
-      {/* SECTION 2: PROBLEMET */}
+      {/* SECTION 2: AI KOMMER OVERALT */}
       <section className="py-16 px-4 relative">
         <div className="max-w-5xl mx-auto">
           <ScrollReveal animation="fadeUp">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Her er sannheten
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+              AI kommer i alle deler av samfunnet
             </h2>
           </ScrollReveal>
           
-          <div className="text-lg text-gray-400 space-y-8 leading-relaxed">
             <ScrollReveal animation="fadeUp" delay={50}>
-              <p className="text-xl text-center max-w-3xl mx-auto">
-                De fleste bedrifter "bruker AI" allerede. Noen ansatte har ChatGPT åpent i en fane.
-                Ledelsen snakker om AI-strategi. Men få bruker det egentlig riktig.
-              </p>
-            </ScrollReveal>
-            
-            <ScrollReveal animation="fadeUp" delay={100}>
-              <p className="font-semibold text-white text-center text-xl mt-12 mb-8">
-                Det koster deg på tre måter:
-              </p>
-            </ScrollReveal>
-            
-            <div className="space-y-6 mt-12">
-              <ScrollReveal animation="fadeLeft" delay={50}>
-                <div className="group relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:bg-white/10 hover:border-[#00D4FF]/40 transition-all duration-300 shadow-2xl">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#00D4FF] via-[#7B61FF] to-[#E961FF]"></div>
-                  <div className="pl-4">
-                    <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                      <span className="text-[#00D4FF]">1.</span>
-                      Du får middelmådige resultater
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed">
-                      Folk vet ikke hvordan de skal "snakke" med AI. De får generiske, robotaktige svar som må omskrives helt. 
-                      De gir opp og tror "AI funker ikke for meg."
-                    </p>
-                  </div>
-                </div>
-              </ScrollReveal>
-              
-              <ScrollReveal animation="fadeLeft" delay={100}>
-                <div className="group relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:bg-white/10 hover:border-[#7B61FF]/40 transition-all duration-300 shadow-2xl">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#00D4FF] via-[#7B61FF] to-[#E961FF]"></div>
-                  <div className="pl-4">
-                    <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                      <span className="text-[#7B61FF]">2.</span>
-                      Du stoler på feil informasjon
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed">
-                      AI kan analysere data og gi deg konklusjoner på sekunder. Men hva hvis konklusjonen er feil? 
-                      Hvis du ikke vet hvordan du skal sjekke AI sitt arbeid, tar du beslutninger på feil grunnlag.
-                    </p>
-                  </div>
-                </div>
-              </ScrollReveal>
-              
-              <ScrollReveal animation="fadeLeft" delay={150}>
-                <div className="group relative overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:bg-white/10 hover:border-[#E961FF]/40 transition-all duration-300 shadow-2xl">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#00D4FF] via-[#7B61FF] to-[#E961FF]"></div>
-                  <div className="pl-4">
-                    <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                      <span className="text-[#E961FF]">3.</span>
-                      Du tar unødvendig risiko
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed">
-                      Mange deler kundedata, forretningshemmeligheter, eller ansattinformasjon med AI uten å tenke over konsekvensene. 
-                      GDPR-brudd er et tastetrykk unna.
-                    </p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            </div>
-            
-            <p className="text-2xl font-bold bg-gradient-to-r from-[#00D4FF] via-[#7B61FF] to-[#E961FF] bg-clip-text text-transparent text-center mt-16">
-              Dette kurset fikser alle tre.
+            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed text-center max-w-4xl mx-auto">
+              Du kommer til å møte AI overalt i årene som kommer, på jobb og privat. Alle bør ha en grunnkompetanse innen AI slik at man bruker verktøy riktig og effektivt og unngår å gjøre dyre feil.
             </p>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -360,15 +287,8 @@ export default function LandingPage({ onLogout }) {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal animation="fadeUp">
             <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Hva du lærer på 6 timer
+              Hva du lærer på 4 timer
             </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal animation="fadeUp" delay={50}>
-            <p className="text-xl text-gray-400 mb-12 text-center max-w-4xl mx-auto leading-relaxed">
-              Dette er ikke en forelesning. 60% av kurset er hands-on oppgaver hvor du faktisk bruker AI på reelle problemer. 
-              Du kommer til å teste, feile (med vilje), og oppdage ting selv - ikke bare høre om dem.
-            </p>
           </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -381,267 +301,7 @@ export default function LandingPage({ onLogout }) {
         </div>
       </section>
 
-      {/* SECTION 4: HVORDAN KURSET FUNGERER */}
-      <section className="py-16 px-4 relative">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal animation="fadeUp">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Et kurs, ikke en forelesning
-            </h2>
-          </ScrollReveal>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <ScrollReveal animation="fadeUp" delay={50}>
-              <FeatureCard
-                icon={Target}
-                title="Du lærer ved å gjøre"
-                description="60% av tiden bruker du på oppgaver. Teori er viktig, men praksis er viktigere."
-              />
-            </ScrollReveal>
-            
-            <ScrollReveal animation="fadeUp" delay={100}>
-              <FeatureCard
-                icon={Sparkles}
-                title="Ingen forkunnskaper nødvendig"
-                description="Null programmering. Null teknisk bakgrunn."
-              />
-            </ScrollReveal>
-            
-            <ScrollReveal animation="fadeUp" delay={150}>
-              <FeatureCard
-                icon={Award}
-                title="Du får verktøy du bruker i morgen"
-                description="Slides, prompt-maler, sjekklister og ressurser – klart til bruk umiddelbart."
-              />
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 5: PRAKTISKE DETALJER */}
-      <section className="py-16 px-4 relative">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal animation="fadeUp">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Praktisk informasjon
-            </h2>
-          </ScrollReveal>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Left Column */}
-            <ScrollReveal animation="fadeRight" delay={50}>
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl h-full">
-              <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-3">
-                <Calendar className="w-6 h-6 text-[#00D4FF]" />
-                <span>Kursdetaljer</span>
-              </h3>
-              <ul className="space-y-5">
-                <li className="flex items-start gap-4 text-gray-300">
-                  <Clock className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-1" />
-                  <span>Varighet: 6 timer (inkl. pauser og lunsj)</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <Users className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-1" />
-                  <span>Format: Fysisk</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <MapPin className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-1" />
-                  <span>Sted: <Placeholder>[TBD]</Placeholder></span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <Calendar className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-1" />
-                  <span>Neste kurs: <Placeholder>[Dato og tid]</Placeholder></span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <DollarSign className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-1" />
-                  <span>Pris: <Placeholder>[Fyll inn]</Placeholder> kr eks. mva</span>
-                </li>
-              </ul>
-            </div>
-            </ScrollReveal>
-            
-            {/* Right Column */}
-            <ScrollReveal animation="fadeLeft" delay={100}>
-            <div className="space-y-6">
-              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl">
-                <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-                  <Laptop className="w-6 h-6 text-[#00D4FF]" />
-                  <span>Hva du må ta med</span>
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Laptop (Mac eller PC)</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Tilgang til ChatGPT eller Claude (gratis versjoner fungerer fint)</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Nysgjerrighet</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl">
-                <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-                  <BookOpen className="w-6 h-6 text-[#00D4FF]" />
-                  <span>Hva du får</span>
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>6 timer undervisning</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Alle slides og materialer</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Prompt-bibliotek med ferdige maler</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Sjekklister for datasikkerhet</span>
-                  </li>
-                  <li className="flex items-start gap-3 text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#00D4FF] flex-shrink-0 mt-0.5" />
-                    <span>Ressursliste for videre læring</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 6: FOR HVEM? */}
-      <section className="py-16 px-4 relative">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal animation="fadeUp">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Er dette kurset for deg?
-            </h2>
-          </ScrollReveal>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Left Column - Yes */}
-            <ScrollReveal animation="fadeUp" delay={50} className="h-full">
-            <div className="relative overflow-hidden h-full bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-green-500/30 shadow-2xl">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full blur-3xl"></div>
-              <h3 className="text-2xl font-bold mb-8 text-green-400 flex items-center gap-3">
-                <CheckCircle2 className="w-7 h-7" />
-                Dette kurset passer for deg hvis
-              </h3>
-              <ul className="space-y-5">
-                <li className="flex items-start gap-4 text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                  <span>Du har hørt mye om AI men ikke skjønt hvordan bruke det i praksis</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                  <span>Du har prøvd ChatGPT noen ganger og fått "ok" resultater</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                  <span>Du er usikker på hva du kan og ikke kan dele med AI</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                  <span>Du vil spare tid på repetitive oppgaver</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                  <span>Du jobber med tekst, data, eller administrative oppgaver</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-1" />
-                  <span>Du vil være trygg på at du bruker AI ansvarlig</span>
-                </li>
-              </ul>
-            </div>
-            </ScrollReveal>
-            
-            {/* Right Column - No */}
-            <ScrollReveal animation="fadeUp" delay={100} className="h-full">
-            <div className="relative overflow-hidden h-full bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-red-500/30 shadow-2xl">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl"></div>
-              <h3 className="text-2xl font-bold mb-8 text-red-400 flex items-center gap-3">
-                <XCircle className="w-7 h-7" />
-                Dette kurset er IKKE for deg hvis
-              </h3>
-              <ul className="space-y-5">
-                <li className="flex items-start gap-4 text-gray-300">
-                  <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
-                  <span>Du vil lære å programmere AI-modeller fra bunnen av</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
-                  <span>Du søker et teknisk deep-dive i maskinlæring</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
-                  <span>Du allerede bruker AI daglig og behersker avanserte teknikker</span>
-                </li>
-                <li className="flex items-start gap-4 text-gray-300">
-                  <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
-                  <span>Du forventer at AI skal løse alt for deg uten at du tenker kritisk</span>
-                </li>
-              </ul>
-            </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 7: FAQ */}
-      <section className="py-16 px-4 relative">
-        <div className="max-w-4xl mx-auto">
-          <ScrollReveal animation="fadeUp">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-              Ofte stilte spørsmål
-            </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal animation="scale" delay={50}>
-          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-            <FAQItem
-              question="Trenger jeg å kunne programmering?"
-              answer="Nei, absolutt ikke! Dette kurset krever ingen tekniske forkunnskaper. Vi fokuserer på hvordan du bruker AI-verktøy som allerede eksisterer, ikke hvordan du bygger dem."
-            />
-            <FAQItem
-              question="Må jeg ha ChatGPT Plus?"
-              answer="Nei, gratisversjonen av ChatGPT eller Claude fungerer helt fint for kurset. Vi kommer til å jobbe med verktøy som er tilgjengelige for alle."
-            />
-            <FAQItem
-              question="Hva om jeg allerede har brukt AI litt?"
-              answer="Perfekt! Du har sannsynligvis oppdaget noen utfordringer og frustrasjoner. Dette kurset vil hjelpe deg å forstå hvorfor du får de resultatene du får, og hvordan du kan forbedre dem dramatisk."
-            />
-            <FAQItem
-              question="Er kurset på norsk?"
-              answer="Ja, hele kurset holdes på norsk. Materialer og eksempler er også på norsk, men noen tekniske begreper kan være på engelsk der det er naturlig."
-            />
-            <FAQItem
-              question="Kan bedriften min bestille kurset internt?"
-              answer={
-                <span>
-                  Ja, absolutt! Vi tilbyr interne kurs for bedrifter. Ta kontakt med{' '}
-                  <Placeholder>[navn]</Placeholder> på{' '}
-                  <Placeholder>[epost]</Placeholder> eller{' '}
-                  <Placeholder>[telefon]</Placeholder> for å diskutere muligheter.
-                </span>
-              }
-              isLast={true}
-            />
-          </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* SECTION 8: SIGNUP FORM */}
+      {/* SECTION 4: SIGNUP FORM */}
       <section className="relative py-20 px-4 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 bg-black"></div>
@@ -654,12 +314,6 @@ export default function LandingPage({ onLogout }) {
             <h2 id="signup-form" className="text-4xl md:text-5xl font-bold mb-4 text-center bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Meld deg på kurset
             </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal animation="fadeUp" delay={50}>
-            <p className="text-lg text-gray-400 mb-8 text-center">
-              Neste kurs: <Placeholder>[Dato]</Placeholder>. <Placeholder>[X]</Placeholder> plasser igjen.
-            </p>
           </ScrollReveal>
           
           <ScrollReveal animation="scale" delay={100}>
