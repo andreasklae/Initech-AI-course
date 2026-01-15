@@ -8,9 +8,6 @@ npm start
 
 Then open http://localhost:5173 in your browser!
 
-### 🔒 Login Required
-The site is password-protected. Use your configured credentials to log in.
-
 ## 🎯 What You'll See
 
 A complete, production-ready landing page with:
@@ -136,4 +133,3 @@ Your landing page is production-ready. Just replace the placeholders and deploy!
 ---
 
 **Pro Tip:** Test on mobile devices before deploying! Run `npm start`, then access your local IP from your phone (e.g., http://192.168.1.X:5173)
-
