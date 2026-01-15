@@ -6,7 +6,7 @@ export default function ScrollProgress() {
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
+      const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
       setScrollProgress(progress);
     };
 
@@ -15,7 +15,11 @@ export default function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-white/5 z-50">
+    <div
+      className="fixed top-0 left-0 w-full h-1 bg-white/5 z-50"
+      aria-hidden="true"
+      role="presentation"
+    >
       <div
         className="h-full bg-gradient-to-r from-[#00D4FF] via-[#7B61FF] to-[#E961FF] transition-all duration-150 ease-out shadow-lg shadow-[#7B61FF]/50"
         style={{ width: `${scrollProgress}%` }}
@@ -23,4 +27,3 @@ export default function ScrollProgress() {
     </div>
   );
 }
-

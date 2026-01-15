@@ -2,9 +2,29 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function Parallax({ children, speed = 0.5, className = '' }) {
   const [offset, setOffset] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+
+    updatePreference();
+    if (media.addEventListener) {
+      media.addEventListener('change', updatePreference);
+      return () => media.removeEventListener('change', updatePreference);
+    }
+
+    media.addListener(updatePreference);
+    return () => media.removeListener(updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setOffset(0);
+      return;
+    }
+
     const handleScroll = () => {
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect();
@@ -19,14 +39,14 @@ export default function Parallax({ children, speed = 0.5, className = '' }) {
     handleScroll(); // Initial calculation
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [speed]);
+  }, [speed, prefersReducedMotion]);
 
   return (
     <div ref={ref} className={className}>
       <div
         style={{
           transform: `translateY(${offset}px)`,
-          transition: 'transform 0.1s ease-out'
+          transition: prefersReducedMotion ? 'none' : 'transform 0.1s ease-out'
         }}
       >
         {children}
@@ -34,4 +54,3 @@ export default function Parallax({ children, speed = 0.5, className = '' }) {
     </div>
   );
 }
-

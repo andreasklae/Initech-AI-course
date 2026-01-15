@@ -35,9 +35,29 @@ export default function ScrollReveal({
   duration = 600 
 }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(media.matches);
+
+    updatePreference();
+    if (media.addEventListener) {
+      media.addEventListener('change', updatePreference);
+      return () => media.removeEventListener('change', updatePreference);
+    }
+
+    media.addListener(updatePreference);
+    return () => media.removeListener(updatePreference);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         // Toggle visibility based on whether element is in viewport
@@ -49,16 +69,17 @@ export default function ScrollReveal({
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const element = ref.current;
+    if (element) {
+      observer.observe(element);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (element) {
+        observer.unobserve(element);
       }
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   const selectedAnimation = animations[animation] || animations.fadeUp;
 
@@ -66,8 +87,8 @@ export default function ScrollReveal({
     <div
       ref={ref}
       style={{
-        transitionDelay: isVisible ? `${delay}ms` : '0ms',
-        transitionDuration: `${duration}ms`
+        transitionDelay: prefersReducedMotion ? '0ms' : isVisible ? `${delay}ms` : '0ms',
+        transitionDuration: prefersReducedMotion ? '0ms' : `${duration}ms`
       }}
       className={`transition-all ${
         isVisible
@@ -79,4 +100,3 @@ export default function ScrollReveal({
     </div>
   );
 }
-

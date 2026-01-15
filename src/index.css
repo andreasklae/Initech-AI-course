@@ -14,6 +14,12 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 @layer utilities {
   .placeholder-highlight {
     @apply bg-yellow-500/20 border-2 border-yellow-500 border-dashed px-2 py-1 rounded-xl font-mono text-yellow-300;
@@ -87,4 +93,3 @@
     border-color: rgba(123, 97, 255, 0.5);
   }
 }
-
