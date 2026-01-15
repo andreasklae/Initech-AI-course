@@ -6,7 +6,7 @@
 
 First, push your code to GitHub if you haven't already:
 
-```bash
+```bash 
 git add .
 git commit -m "Initial commit: React app with GitHub Pages deployment"
 git push origin main
