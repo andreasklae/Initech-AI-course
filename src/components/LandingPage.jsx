@@ -208,6 +208,11 @@ export default function LandingPage() {
       description: 'Få en innføring i bruken av enkle, men kraftige verktøy, for å utvide dine ferdigheter fra ren tekst til enkel dataanalyse og gode presentasjoner.'
     },
     {
+      icon: Target,
+      title: 'Innsikt fra interne data',
+      description: 'Lær hvordan din bedrift kan bruke AI til å analysere interne forretningsdata, avdekke mønstre i drift og salg, og omsette innsikt til bedre beslutninger.'
+    },
+    {
       icon: ThumbsUp,
       title: 'Få selvtilliten du trenger',
       description: 'Etter 4 timer vil du ha det praktiske grunnlaget som gjør deg trygg på å delta i AI-samtaler og bruke teknologien i din arbeidshverdag.'
