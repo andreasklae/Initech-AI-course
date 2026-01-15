@@ -172,6 +172,7 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
 export default function LandingPage() {
   const [signupType, setSignupType] = useState('individual'); // 'individual' or 'business'
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleCTAClick = () => {
     // Scroll to signup form heading with offset so it's visible at top
@@ -202,9 +203,11 @@ export default function LandingPage() {
 
     if (!serviceId || !notificationTemplateId || !confirmationTemplateId || !publicKey) {
       console.error('EmailJS env vars are missing. Check .env configuration.');
+      setSubmitStatus('error');
       return;
     }
 
+    setSubmitStatus(null);
     setIsSubmitting(true);
 
     const form = event.currentTarget;
@@ -270,8 +273,10 @@ export default function LandingPage() {
       );
 
       form.reset();
+      setSubmitStatus('success');
     } catch (error) {
       console.error('EmailJS send failed:', error);
+      setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
@@ -416,43 +421,65 @@ export default function LandingPage() {
             </ScrollReveal>
             
             <ScrollReveal animation="scale" delay={100}>
-              {/* Toggle between individual and business */}
-              <div className="flex gap-4 mb-8">
-                <button
-                  type="button"
-                  aria-pressed={signupType === 'individual'}
-                  aria-controls="signup-form-panel"
-                  onClick={() => setSignupType('individual')}
-                  className={`flex-1 py-3 px-6 rounded-2xl font-semibold transition-all duration-300 ${focusRing} ${
-                    signupType === 'individual'
-                      ? 'bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white shadow-lg shadow-[#7B61FF]/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
-                  }`}
-                >
-                  Enkeltperson
-                </button>
-                <button
-                  type="button"
-                  aria-pressed={signupType === 'business'}
-                  aria-controls="signup-form-panel"
-                  onClick={() => setSignupType('business')}
-                  className={`flex-1 py-3 px-6 rounded-2xl font-semibold transition-all duration-300 ${focusRing} ${
-                    signupType === 'business'
-                      ? 'bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white shadow-lg shadow-[#7B61FF]/20'
-                      : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
-                  }`}
-                >
-                  Bedrift
-                </button>
-              </div>
+              {submitStatus ? (
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl text-center space-y-6">
+                  <p className="text-xl md:text-2xl font-semibold">
+                    {submitStatus === 'success'
+                      ? 'Takk for påmeldingen! Vi tar kontakt snart.'
+                      : 'Noe gikk galt ved innsending. Vennligst prøv igjen.'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitStatus(null)}
+                    className={`w-full relative overflow-hidden bg-black/50 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:bg-black/70 hover:shadow-2xl hover:shadow-[#7B61FF]/20 border-2 border-transparent ${focusRing}`}
+                    style={{
+                      backgroundImage: 'linear-gradient(black, black), linear-gradient(135deg, #00D4FF 0%, #7B61FF 35%, #E961FF 65%, #FF6B9D 100%)',
+                      backgroundOrigin: 'border-box',
+                      backgroundClip: 'padding-box, border-box',
+                    }}
+                  >
+                    <span className="relative z-10">Send inn en ny påmelding</span>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {/* Toggle between individual and business */}
+                  <div className="flex gap-4 mb-8">
+                    <button
+                      type="button"
+                      aria-pressed={signupType === 'individual'}
+                      aria-controls="signup-form-panel"
+                      onClick={() => setSignupType('individual')}
+                      className={`flex-1 py-3 px-6 rounded-2xl font-semibold transition-all duration-300 ${focusRing} ${
+                        signupType === 'individual'
+                          ? 'bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white shadow-lg shadow-[#7B61FF]/20'
+                          : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
+                      }`}
+                    >
+                      Enkeltperson
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={signupType === 'business'}
+                      aria-controls="signup-form-panel"
+                      onClick={() => setSignupType('business')}
+                      className={`flex-1 py-3 px-6 rounded-2xl font-semibold transition-all duration-300 ${focusRing} ${
+                        signupType === 'business'
+                          ? 'bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white shadow-lg shadow-[#7B61FF]/20'
+                          : 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10'
+                      }`}
+                    >
+                      Bedrift
+                    </button>
+                  </div>
 
-              <form
-                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl"
-                onSubmit={handleSubmit}
-              >
-                <div className="space-y-6" id="signup-form-panel">
-                  {signupType === 'individual' ? (
-                    <>
+                  <form
+                    className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl"
+                    onSubmit={handleSubmit}
+                  >
+                    <div className="space-y-6" id="signup-form-panel">
+                      {signupType === 'individual' ? (
+                        <>
                       {/* Individual Form */}
                       {/* Name Field */}
                       <div>
@@ -650,7 +677,9 @@ export default function LandingPage() {
                     </span>
                   </button>
                 </div>
-              </form>
+                  </form>
+                </>
+              )}
             </ScrollReveal>
             
           </div>
