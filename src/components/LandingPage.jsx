@@ -1,4 +1,5 @@
 import { useId, useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { 
   Brain, 
   MessageSquare, 
@@ -170,6 +171,7 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
 
 export default function LandingPage() {
   const [signupType, setSignupType] = useState('individual'); // 'individual' or 'business'
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCTAClick = () => {
     // Scroll to signup form heading with offset so it's visible at top
@@ -183,6 +185,95 @@ export default function LandingPage() {
         top: offsetPosition,
         behavior: prefersReducedMotion ? 'auto' : 'smooth'
       });
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const notificationTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_NOTIFICATION;
+    const confirmationTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_CONFIRMATION;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !notificationTemplateId || !confirmationTemplateId || !publicKey) {
+      console.error('EmailJS env vars are missing. Check .env configuration.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const getValue = (key) => {
+      const value = formData.get(key);
+      return typeof value === 'string' ? value.trim() : '';
+    };
+
+    const isBusiness = signupType === 'business';
+    const name = getValue('name');
+    const email = getValue('email');
+    const phone = getValue('phone');
+    const company = getValue('company');
+    const message = getValue('message');
+
+    const businessCompany = getValue('business-company');
+    const businessContact = getValue('business-contact');
+    const businessEmail = getValue('business-email');
+    const businessPhone = getValue('business-phone');
+    const participants = getValue('participants');
+    const businessMessage = getValue('business-message');
+
+    const contactName = isBusiness ? businessContact : name;
+    const contactEmail = isBusiness ? businessEmail : email;
+    const companyName = isBusiness ? businessCompany : company;
+
+    const payload = {
+      signup_type: signupType,
+      submitted_at: new Date().toISOString(),
+      contact_name: contactName,
+      contact_email: contactEmail,
+      company_name: companyName,
+      participants,
+      name,
+      email,
+      phone,
+      company,
+      message,
+      business_company: businessCompany,
+      business_contact: businessContact,
+      business_email: businessEmail,
+      business_phone: businessPhone,
+      business_message: businessMessage,
+      'business-company': businessCompany,
+      'business-contact': businessContact,
+      'business-email': businessEmail,
+      'business-phone': businessPhone,
+      'business-message': businessMessage
+    };
+
+    try {
+      await emailjs.send(serviceId, notificationTemplateId, payload, publicKey);
+      await emailjs.send(
+        serviceId,
+        confirmationTemplateId,
+        {
+          ...payload,
+          to_email: contactEmail,
+          to_name: contactName
+        },
+        publicKey
+      );
+
+      form.reset();
+    } catch (error) {
+      console.error('EmailJS send failed:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -355,7 +446,10 @@ export default function LandingPage() {
                 </button>
               </div>
 
-              <form className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+              <form
+                className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl"
+                onSubmit={handleSubmit}
+              >
                 <div className="space-y-6" id="signup-form-panel">
                   {signupType === 'individual' ? (
                     <>
@@ -542,6 +636,8 @@ export default function LandingPage() {
                   {/* Submit Button */}
                   <button
                     type="submit"
+                    disabled={isSubmitting}
+                    aria-busy={isSubmitting}
                     className={`w-full relative overflow-hidden bg-black/50 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-3xl transition-all duration-300 transform hover:scale-105 hover:bg-black/70 hover:shadow-2xl hover:shadow-[#7B61FF]/20 border-2 border-transparent ${focusRing}`}
                     style={{
                       backgroundImage: 'linear-gradient(black, black), linear-gradient(135deg, #00D4FF 0%, #7B61FF 35%, #E961FF 65%, #FF6B9D 100%)',
@@ -549,7 +645,9 @@ export default function LandingPage() {
                       backgroundClip: 'padding-box, border-box',
                     }}
                   >
-                    <span className="relative z-10">Send påmelding</span>
+                    <span className="relative z-10">
+                      {isSubmitting ? 'Sender...' : 'Send påmelding'}
+                    </span>
                   </button>
                 </div>
               </form>
