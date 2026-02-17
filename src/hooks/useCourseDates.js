@@ -73,19 +73,26 @@ export default function useCourseDates() {
   const [hasCapacityInfo, setHasCapacityInfo] = useState(false);
 
   useEffect(() => {
+    const scriptUrl = import.meta.env.VITE_GOOGLE_SHEETS_SCRIPT_URL;
     const sheetUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL;
-    if (!sheetUrl) {
+
+    let fetchUrl = null;
+    if (scriptUrl) {
+      fetchUrl = scriptUrl.replace(/\/$/, '');
+    } else if (sheetUrl) {
+      const sheetId = extractSheetId(sheetUrl);
+      if (sheetId) {
+        const sheetCsvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+        fetchUrl = import.meta.env.PROD
+          ? `https://api.allorigins.win/raw?url=${encodeURIComponent(sheetCsvUrl)}`
+          : sheetCsvUrl;
+      }
+    }
+
+    if (!fetchUrl) {
       setLoading(false);
       return;
     }
-
-    const sheetId = extractSheetId(sheetUrl);
-    if (!sheetId) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
 
     fetch(fetchUrl)
       .then(res => {
