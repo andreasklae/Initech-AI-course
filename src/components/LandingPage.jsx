@@ -27,6 +27,7 @@ import mainLogo from '../assets/main_logo.png';
 import ScrollReveal from './ScrollReveal';
 import ScrollProgress from './ScrollProgress';
 import Parallax from './Parallax';
+import useCourseDates from '../hooks/useCourseDates';
 
 // Placeholder component - makes it obvious what needs to be replaced
 const Placeholder = ({ children }) => (
@@ -173,6 +174,25 @@ export default function LandingPage() {
   const [signupType, setSignupType] = useState('individual'); // 'individual' or 'business'
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const { dates, loading: datesLoading, hasCapacityInfo } = useCourseDates();
+  const availableDates = dates.filter(d => !d.isFull);
+  const nextDate = availableDates.length > 0 ? availableDates[0] : null;
+
+  const handleDateSelect = (dateISO) => {
+    setSelectedDate(dateISO);
+    const formSection = document.getElementById('signup-form');
+    if (formSection) {
+      const elementPosition = formSection.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - 80;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth'
+      });
+    }
+  };
 
   const handleCTAClick = () => {
     // Scroll to signup form heading with offset so it's visible at top
@@ -235,6 +255,10 @@ export default function LandingPage() {
     const contactEmail = isBusiness ? businessEmail : email;
     const companyName = isBusiness ? businessCompany : company;
 
+    const selectedDateFormatted = selectedDate
+      ? (dates.find(d => d.dateISO === selectedDate)?.dateFormatted || selectedDate)
+      : '';
+
     const payload = {
       signup_type: signupType,
       submitted_at: new Date().toISOString(),
@@ -256,7 +280,8 @@ export default function LandingPage() {
       'business-contact': businessContact,
       'business-email': businessEmail,
       'business-phone': businessPhone,
-      'business-message': businessMessage
+      'business-message': businessMessage,
+      selected_date: selectedDateFormatted
     };
 
     try {
@@ -273,6 +298,7 @@ export default function LandingPage() {
       );
 
       form.reset();
+      setSelectedDate('');
       setSubmitStatus('success');
     } catch (error) {
       console.error('EmailJS send failed:', error);
@@ -360,6 +386,17 @@ export default function LandingPage() {
               </p>
             </ScrollReveal>
             
+            {!datesLoading && nextDate && (
+              <ScrollReveal animation="fadeUp" delay={350}>
+                <div className="inline-flex items-center gap-2 px-5 py-2.5 mb-8 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
+                  <Calendar className="w-4 h-4 text-[#00D4FF]" />
+                  <span className="text-sm md:text-base text-gray-300">
+                    Neste kurs: <span className="text-white font-semibold">{nextDate.dateFormatted}</span>
+                  </span>
+                </div>
+              </ScrollReveal>
+            )}
+
             <ScrollReveal animation="scale" delay={400}>
               <CTAButton onClick={handleCTAClick} />
             </ScrollReveal>
@@ -404,6 +441,70 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        {/* SECTION: KOMMENDE KURSDATOER */}
+        {!datesLoading && dates.length > 0 && (
+          <section className="py-16 px-4 relative">
+            <div className="max-w-5xl mx-auto">
+              <ScrollReveal animation="fadeUp">
+                <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                  Kommende kursdatoer
+                </h2>
+              </ScrollReveal>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {dates.map((d, index) => (
+                  <ScrollReveal key={d.dateISO} animation="scale" delay={index * 50} className="h-full">
+                    <div
+                      className={`relative h-full flex flex-col bg-white/5 backdrop-blur-xl p-6 rounded-3xl border transition-all duration-300 shadow-2xl ${
+                        d.isFull
+                          ? 'border-white/5 opacity-60'
+                          : 'border-white/10 hover:border-[#7B61FF]/40 hover:-translate-y-1'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div
+                          className={`p-2 rounded-xl ${
+                            d.isFull ? 'bg-white/5' : 'bg-gradient-to-br from-[#00D4FF]/10 to-[#7B61FF]/10'
+                          }`}
+                        >
+                          <Calendar className={`w-5 h-5 ${d.isFull ? 'text-gray-500' : 'text-[#00D4FF]'}`} />
+                        </div>
+                        <span className={`text-lg font-semibold ${d.isFull ? 'text-gray-500' : 'text-white'}`}>
+                          {d.dateFormatted}
+                        </span>
+                      </div>
+
+                      {hasCapacityInfo && d.kapasitet !== null && d.ledigePlasser !== null && (
+                        <p className={`text-sm mb-4 ${d.isFull ? 'text-gray-600' : 'text-gray-400'}`}>
+                          {d.isFull ? 'Ingen ledige plasser' : `${d.ledigePlasser} ledige plasser`}
+                        </p>
+                      )}
+
+                      {d.isFull ? (
+                        <div className="mt-auto pt-3">
+                          <span className="inline-block px-4 py-2 rounded-2xl bg-white/5 text-gray-500 text-sm font-medium">
+                            Fullt
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="mt-auto pt-3">
+                          <button
+                            type="button"
+                            onClick={() => handleDateSelect(d.dateISO)}
+                            className={`w-full py-2.5 px-5 rounded-2xl text-sm font-semibold transition-all duration-300 bg-gradient-to-r from-[#00D4FF] to-[#7B61FF] text-white hover:shadow-lg hover:shadow-[#7B61FF]/20 hover:scale-105 ${focusRing}`}
+                          >
+                            Meld deg på
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* SECTION 4: SIGNUP FORM */}
         <section className="relative py-20 px-4 overflow-hidden">
@@ -478,6 +579,31 @@ export default function LandingPage() {
                     onSubmit={handleSubmit}
                   >
                     <div className="space-y-6" id="signup-form-panel">
+                      {availableDates.length > 0 && (
+                        <div>
+                          <label htmlFor="selected_date" className="block text-sm font-medium text-gray-300 mb-2">
+                            Velg dato
+                          </label>
+                          <div className="relative">
+                            <select
+                              id="selected_date"
+                              name="selected_date"
+                              value={selectedDate}
+                              onChange={(e) => setSelectedDate(e.target.value)}
+                              className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-2xl text-white focus:outline-none focus:border-[#7B61FF] focus:ring-2 focus:ring-[#7B61FF]/20 transition-all appearance-none cursor-pointer"
+                            >
+                              <option value="" className="bg-gray-900">Velg en dato...</option>
+                              {availableDates.map(d => (
+                                <option key={d.dateISO} value={d.dateISO} className="bg-gray-900">
+                                  {d.dateFormatted}{hasCapacityInfo && d.kapasitet !== null && d.ledigePlasser !== null ? ` (${d.ledigePlasser} ledige plasser)` : ''}
+                                </option>
+                              ))}
+                            </select>
+                            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                          </div>
+                        </div>
+                      )}
+
                       {signupType === 'individual' ? (
                         <>
                       {/* Individual Form */}
